@@ -1,0 +1,11 @@
+include ':base'
+include ':viewpager'
+include ':log'
+include ':litepal'
+include ':gson'
+include ':bahavior'
+include ':drawable'
+include ':rxview'
+include ':backlib'
+include ':app'
+rootProject.name = "BaseDGtle"
