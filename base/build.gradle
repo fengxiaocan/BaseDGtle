@@ -29,13 +29,5 @@ android {
 }
 
 dependencies {
-    api project(path: ':litepal')
-    api project(path: ':gson')
-    api project(path: ':rxview')
-    api project(path: ':bahavior')
-    api project(path: ':drawable')
-    api project(path: ':backlib')
-    api project(path: ':log')
-    api project(path: ':viewpager')
     implementation 'androidx.appcompat:appcompat:1.2.0'
 }

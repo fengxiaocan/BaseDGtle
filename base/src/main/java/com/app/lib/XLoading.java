@@ -18,7 +18,7 @@ public class XLoading {
     private static boolean DEBUG = false;
     private Adapter mAdapter;
 
-    private XLoading(){
+    private XLoading() {
     }
 
     /**
@@ -26,7 +26,7 @@ public class XLoading {
      *
      * @param debug true:debug mode, false:not debug mode
      */
-    public static void debug(boolean debug){
+    public static void debug(boolean debug) {
         DEBUG = debug;
     }
 
@@ -36,7 +36,7 @@ public class XLoading {
      * @param adapter another adapter different from the default one
      * @return Gloading
      */
-    public static XLoading from(Adapter adapter){
+    public static XLoading from(Adapter adapter) {
         XLoading loading = new XLoading();
         loading.mAdapter = adapter;
         return loading;
@@ -47,10 +47,10 @@ public class XLoading {
      *
      * @return default Gloading object
      */
-    public static XLoading getDefault(){
-        if(mDefault == null){
-            synchronized(XLoading.class){
-                if(mDefault == null){
+    public static XLoading getDefault() {
+        if (mDefault == null) {
+            synchronized (XLoading.class) {
+                if (mDefault == null) {
                     mDefault = new XLoading();
                 }
             }
@@ -63,7 +63,7 @@ public class XLoading {
      *
      * @param adapter adapter to create all status views
      */
-    public static void initDefault(Adapter adapter){
+    public static void initDefault(Adapter adapter) {
         getDefault().mAdapter = adapter;
     }
 
@@ -74,9 +74,9 @@ public class XLoading {
      * @param activity current activity object
      * @return holder of Gloading
      */
-    public Holder wrap(Activity activity){
+    public Holder wrap(Activity activity) {
         ViewGroup wrapper = activity.findViewById(android.R.id.content);
-        return new Holder(mAdapter,activity,wrapper);
+        return new Holder(mAdapter, activity, wrapper);
     }
 
     /**
@@ -85,43 +85,43 @@ public class XLoading {
      * @param view view to be wrapped
      * @return Holder
      */
-    public Holder wrap(View view){
+    public Holder wrap(View view) {
         FrameLayout wrapper = new FrameLayout(view.getContext());
         ViewGroup.LayoutParams lp = view.getLayoutParams();
-        if(lp != null){
+        if (lp != null) {
             wrapper.setLayoutParams(lp);
         }
-        if(view.getParent() != null){
-            ViewGroup parent = (ViewGroup)view.getParent();
+        if (view.getParent() != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
             int index = parent.indexOfChild(view);
             parent.removeView(view);
-            parent.addView(wrapper,index);
+            parent.addView(wrapper, index);
         }
         ViewGroup.LayoutParams newLp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
-        wrapper.addView(view,newLp);
-        return new Holder(mAdapter,view.getContext(),wrapper);
+        wrapper.addView(view, newLp);
+        return new Holder(mAdapter, view.getContext(), wrapper);
     }
 
-    public Holder wrapFragment(View view){
+    public Holder wrapFragment(View view) {
         FrameLayout wrapper = new FrameLayout(view.getContext());
         wrapper.setBackground(view.getBackground());
         ViewGroup.LayoutParams lp = view.getLayoutParams();
-        if(lp != null){
+        if (lp != null) {
             wrapper.setLayoutParams(lp);
         }
-        if(view.getParent() != null){
-            ViewGroup parent = (ViewGroup)view.getParent();
+        if (view.getParent() != null) {
+            ViewGroup parent = (ViewGroup) view.getParent();
             parent.removeView(view);
         }
         wrapper.addView(view);
-        return new Holder(mAdapter,view.getContext(),wrapper);
+        return new Holder(mAdapter, view.getContext(), wrapper);
     }
 
     /**
      * Provides view to show current loading status
      */
-    public interface Adapter{
+    public interface Adapter {
         /**
          * get view for current status
          *
@@ -138,7 +138,7 @@ public class XLoading {
      * create by {@link XLoading#wrap(Activity)} or {@link XLoading#wrap(View)}<br>
      * the core API for showing all status view
      */
-    public static class Holder{
+    public static class Holder {
         private Adapter mAdapter;
         private Context mContext;
         private Runnable mRetryTask;
@@ -148,7 +148,7 @@ public class XLoading {
         private SparseArray<View> mStatusViews = new SparseArray<>();
         private Object mData;
 
-        private Holder(Adapter adapter, Context context, ViewGroup wrapper){
+        private Holder(Adapter adapter, Context context, ViewGroup wrapper) {
             this.mAdapter = adapter;
             this.mContext = context;
             this.mWrapper = wrapper;
@@ -160,7 +160,7 @@ public class XLoading {
          * @param task when user click in load failed UI, run this task
          * @return this
          */
-        public Holder withRetry(Runnable task){
+        public Holder withRetry(Runnable task) {
             mRetryTask = task;
             return this;
         }
@@ -171,7 +171,7 @@ public class XLoading {
          * @param data extension data
          * @return this
          */
-        public Holder withData(Object data){
+        public Holder withData(Object data) {
             this.mData = data;
             return this;
         }
@@ -179,38 +179,38 @@ public class XLoading {
         /**
          * show UI for status: {@link #STATUS_LOADING}
          */
-        public void showLoading(){
+        public void showLoading() {
             showLoading(STATUS_LOADING);
         }
 
         /**
          * show UI for status: {@link #STATUS_LOAD_SUCCESS}
          */
-        public void showLoadSuccess(){
+        public void showLoadSuccess() {
             showLoading(STATUS_LOAD_SUCCESS);
         }
 
         /**
          * show UI for status: {@link #STATUS_LOAD_FAILED}
          */
-        public void showLoadFailed(){
+        public void showLoadFailed() {
             showLoading(STATUS_LOAD_FAILED);
         }
 
         /**
          * show UI for status: {@link #STATUS_EMPTY_DATA}
          */
-        public void showEmpty(){
+        public void showEmpty() {
             showLoading(STATUS_EMPTY_DATA);
         }
 
-        public void hideLoading(){
-            if(mCurStatusView != null){
+        public void hideLoading() {
+            if (mCurStatusView != null) {
                 mWrapper.removeView(mCurStatusView);
             }
             mCurStatusView = null;
             curState = 0;
-            for(int i = 0;i < mWrapper.getChildCount();i++){
+            for (int i = 0; i < mWrapper.getChildCount(); i++) {
                 mWrapper.getChildAt(i).setVisibility(View.VISIBLE);
             }
         }
@@ -224,52 +224,52 @@ public class XLoading {
          * @see #showLoadSuccess()
          * @see #showEmpty()
          */
-        public void showLoading(int status){
-            if(curState == status || ! validate()){
+        public void showLoading(int status) {
+            if (curState == status || !validate()) {
                 return;
             }
             curState = status;
             //first try to reuse status view
             View convertView = mStatusViews.get(status);
-            if(convertView == null){
-                convertView = mAdapter.getView(this,status);
+            if (convertView == null) {
+                convertView = mAdapter.getView(this, status);
             }
-            try{
+            try {
                 //call customer adapter to get UI for specific status. convertView can be reused
-                if(convertView == null){
+                if (convertView == null) {
                     return;
                 }
-                if(convertView != mCurStatusView || mWrapper.indexOfChild(convertView) < 0){
-                    if(mCurStatusView != null){
+                if (convertView != mCurStatusView || mWrapper.indexOfChild(convertView) < 0) {
+                    if (mCurStatusView != null) {
                         mWrapper.removeView(mCurStatusView);
                     }
-                    for(int i = 0;i < mWrapper.getChildCount();i++){
+                    for (int i = 0; i < mWrapper.getChildCount(); i++) {
                         mWrapper.getChildAt(i).setVisibility(View.GONE);
                     }
                     mWrapper.addView(convertView);
                     ViewGroup.LayoutParams lp = convertView.getLayoutParams();
-                    if(lp != null){
+                    if (lp != null) {
                         lp.width = ViewGroup.LayoutParams.MATCH_PARENT;
                         lp.height = ViewGroup.LayoutParams.MATCH_PARENT;
                     }
-                } else if(mWrapper.indexOfChild(convertView) != mWrapper.getChildCount() - 1){
+                } else if (mWrapper.indexOfChild(convertView) != mWrapper.getChildCount() - 1) {
                     // make sure loading status view at the front
                     convertView.bringToFront();
                 }
                 mCurStatusView = convertView;
-                mStatusViews.put(status,convertView);
-            } catch(Exception e){
-                if(DEBUG){
+                mStatusViews.put(status, convertView);
+            } catch (Exception e) {
+                if (DEBUG) {
                     e.printStackTrace();
                 }
             }
         }
 
-        private boolean validate(){
+        private boolean validate() {
             return mAdapter != null && mContext != null && mWrapper != null;
         }
 
-        public Context getContext(){
+        public Context getContext() {
             return mContext;
         }
 
@@ -278,7 +278,7 @@ public class XLoading {
          *
          * @return container of gloading
          */
-        public ViewGroup getWrapper(){
+        public ViewGroup getWrapper() {
             return mWrapper;
         }
 
@@ -287,7 +287,7 @@ public class XLoading {
          *
          * @return retry task
          */
-        public Runnable getRetryTask(){
+        public Runnable getRetryTask() {
             return mRetryTask;
         }
 
@@ -297,11 +297,11 @@ public class XLoading {
          * @param <T> return type
          * @return data
          */
-        public <T> T getData(){
-            try{
-                return (T)mData;
-            } catch(Exception e){
-                if(DEBUG){
+        public <T> T getData() {
+            try {
+                return (T) mData;
+            } catch (Exception e) {
+                if (DEBUG) {
                     e.printStackTrace();
                 }
             }
